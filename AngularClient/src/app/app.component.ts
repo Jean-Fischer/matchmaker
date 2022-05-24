@@ -11,7 +11,7 @@ export class AppComponent {
   title = 'match-maker';
   public match : MatchDto = {};
   constructor(private matchService : MatchService, private http : HttpClient){
-    matchService.matchMatchidGet(6).subscribe(data=>this.match = data);
+    matchService.apiMatchMatchidGet(6).subscribe(s=>this.match = s)
 
     
   }

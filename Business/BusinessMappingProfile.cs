@@ -13,5 +13,7 @@ public class BusinessMappingProfile : Profile
             .ForMember(s=>s.ParticipationB,opt=>opt.MapFrom(src=>src.Participations.Count>=2 ? src.Participations[1]:null));
         CreateMap<Participation, ParticipationDto>().ReverseMap();
         CreateMap<Player, PlayerDto>().ReverseMap();
+
+        CreateMap<PlayerDto, Player>().ReverseMap();
     }
 }

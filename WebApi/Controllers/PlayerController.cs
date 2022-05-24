@@ -1,18 +1,22 @@
-﻿using DAL.Models;
+﻿using Business.Dto;
+using Business.Services.Player;
+using DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 
 namespace WebApi.Controllers;
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class PlayerController
 {
     private readonly IDbContextFactory<MatchMakingContext> _dbContextFactory;
-
-    public PlayerController(IDbContextFactory<MatchMakingContext> dbContextFactory)
+    private readonly IPlayerService _playerService;
+    
+    public PlayerController(IDbContextFactory<MatchMakingContext> dbContextFactory, IPlayerService playerService)
     {
         _dbContextFactory = dbContextFactory;
+        _playerService = playerService;
     }
     
     
@@ -22,5 +26,13 @@ public class PlayerController
         await using var context = await _dbContextFactory.CreateDbContextAsync();
         return context.Players.ToList();
     }
+
+    [HttpPost("")]
+    public async Task<PlayerDto> CreatePlayer(PlayerDto player)
+    {
+        return await _playerService.CreatePlayer(player);
+    } 
+    
+    
     
 }

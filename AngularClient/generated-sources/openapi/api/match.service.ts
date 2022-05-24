@@ -93,10 +93,10 @@ export class MatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public matchCreatePost(playerIdA?: number, playerIdB?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<number>;
-    public matchCreatePost(playerIdA?: number, playerIdB?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<number>>;
-    public matchCreatePost(playerIdA?: number, playerIdB?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<number>>;
-    public matchCreatePost(playerIdA?: number, playerIdB?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiMatchCreatePost(playerIdA?: number, playerIdB?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<number>;
+    public apiMatchCreatePost(playerIdA?: number, playerIdB?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<number>>;
+    public apiMatchCreatePost(playerIdA?: number, playerIdB?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<number>>;
+    public apiMatchCreatePost(playerIdA?: number, playerIdB?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (playerIdA !== undefined && playerIdA !== null) {
@@ -141,7 +141,7 @@ export class MatchService {
             }
         }
 
-        return this.httpClient.post<number>(`${this.configuration.basePath}/Match/create`,
+        return this.httpClient.post<number>(`${this.configuration.basePath}/api/Match/create`,
             null,
             {
                 context: localVarHttpContext,
@@ -161,10 +161,10 @@ export class MatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public matchGet(pageSize?: number, pageNumber?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<MatchDto>>;
-    public matchGet(pageSize?: number, pageNumber?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<MatchDto>>>;
-    public matchGet(pageSize?: number, pageNumber?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<MatchDto>>>;
-    public matchGet(pageSize?: number, pageNumber?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiMatchGet(pageSize?: number, pageNumber?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<MatchDto>>;
+    public apiMatchGet(pageSize?: number, pageNumber?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<MatchDto>>>;
+    public apiMatchGet(pageSize?: number, pageNumber?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<MatchDto>>>;
+    public apiMatchGet(pageSize?: number, pageNumber?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (pageSize !== undefined && pageSize !== null) {
@@ -209,7 +209,7 @@ export class MatchService {
             }
         }
 
-        return this.httpClient.get<Array<MatchDto>>(`${this.configuration.basePath}/Match`,
+        return this.httpClient.get<Array<MatchDto>>(`${this.configuration.basePath}/api/Match`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -227,12 +227,12 @@ export class MatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public matchMatchidGet(matchid: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<MatchDto>;
-    public matchMatchidGet(matchid: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<MatchDto>>;
-    public matchMatchidGet(matchid: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<MatchDto>>;
-    public matchMatchidGet(matchid: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiMatchMatchidGet(matchid: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<MatchDto>;
+    public apiMatchMatchidGet(matchid: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<MatchDto>>;
+    public apiMatchMatchidGet(matchid: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<MatchDto>>;
+    public apiMatchMatchidGet(matchid: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (matchid === null || matchid === undefined) {
-            throw new Error('Required parameter matchid was null or undefined when calling matchMatchidGet.');
+            throw new Error('Required parameter matchid was null or undefined when calling apiMatchMatchidGet.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -268,7 +268,7 @@ export class MatchService {
             }
         }
 
-        return this.httpClient.get<MatchDto>(`${this.configuration.basePath}/Match/${encodeURIComponent(String(matchid))}`,
+        return this.httpClient.get<MatchDto>(`${this.configuration.basePath}/api/Match/${encodeURIComponent(String(matchid))}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -285,12 +285,12 @@ export class MatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public matchResolveMatchidPost(matchid: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
-    public matchResolveMatchidPost(matchid: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
-    public matchResolveMatchidPost(matchid: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
-    public matchResolveMatchidPost(matchid: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
+    public apiMatchResolveMatchidPost(matchid: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
+    public apiMatchResolveMatchidPost(matchid: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiMatchResolveMatchidPost(matchid: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiMatchResolveMatchidPost(matchid: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
         if (matchid === null || matchid === undefined) {
-            throw new Error('Required parameter matchid was null or undefined when calling matchResolveMatchidPost.');
+            throw new Error('Required parameter matchid was null or undefined when calling apiMatchResolveMatchidPost.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -323,7 +323,7 @@ export class MatchService {
             }
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/Match/resolve/${encodeURIComponent(String(matchid))}`,
+        return this.httpClient.post<any>(`${this.configuration.basePath}/api/Match/resolve/${encodeURIComponent(String(matchid))}`,
             null,
             {
                 context: localVarHttpContext,

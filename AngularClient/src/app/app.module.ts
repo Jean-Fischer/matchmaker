@@ -16,7 +16,7 @@ import { AppComponent } from './app.component';
     ApiModule,
     HttpClientModule
   ],
-  providers: [{provide : BASE_PATH,useValue:"http://localhost:5154"}],
+  providers: [{ provide: BASE_PATH, useValue:"https://localhost:7154"}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
