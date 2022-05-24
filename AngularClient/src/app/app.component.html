@@ -1,1 +1,10 @@
-{{match|json}}
+
+<div class="container">
+    <div class="row">
+
+        <div class="col" *ngFor="let player of players">
+            <app-player-card [player]="player"></app-player-card>
+        </div>
+    </div>
+
+</div>
