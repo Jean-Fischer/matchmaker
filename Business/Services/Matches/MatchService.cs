@@ -66,10 +66,12 @@ public class MatchService : IMatchService
         var newPlayerBRating = (int) _ratingService.GetNewRating(participations.B.Player.Rank,
             participations.A.Player.Rank,
             GameResultCoefficientHelper.GetCoefficientFromResult(participations.B.HasWon));
-
+        match.PlayDate = DateTime.Now;
         participations.A.FinishingRank =  newPlayerARating ;
+        participations.A.RankDifference =  participations.A.StartingRank - newPlayerARating ;
         participations.A.Player.Rank =  newPlayerARating;
         participations.B.FinishingRank = newPlayerBRating ;
+        participations.B.RankDifference =  participations.B.StartingRank - newPlayerARating ;
         participations.B.Player.Rank = newPlayerBRating ;
 
         await context.SaveChangesAsync();
@@ -94,5 +96,15 @@ public class MatchService : IMatchService
             //.Skip(pageSize*pageNumber)
             //.Take(pageSize)
             .ProjectTo<MatchDto>(_mapper.ConfigurationProvider).ToListAsync();
+    }
+
+    public async Task ResolveAllUnresolvedMatches()
+    {
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+        var unresolvedMatches = context.Matches.Where(s => s.PlayDate == null).ToList();
+        foreach (var match in unresolvedMatches)
+        {
+            await ResolveGame(match.Id);
+        }
     }
 }

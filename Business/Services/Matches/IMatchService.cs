@@ -9,4 +9,5 @@ public interface IMatchService
     Task<Match> ResolveGame(int matchId);
     Task<MatchDto> Get(int matchId);
     Task<IEnumerable<MatchDto>> GetAll(int pageSize, int pageNumber);
+    Task ResolveAllUnresolvedMatches();
 }

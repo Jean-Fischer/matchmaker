@@ -5,6 +5,7 @@ using Business.Services.Player;
 using Business.Services.Rating;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using WebApi.HostedService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,9 @@ builder.Services.AddScoped<IRatingService,RatingService>();
 builder.Services.AddScoped<IPlayerService,PlayerService>();
 builder.Services.AddScoped<IMatchSimulationService,MatchSimulationService>();
 builder.Services.AddAutoMapper(typeof(BusinessMappingProfile));
+builder.Services.AddHostedService<MatchResolver>();
+
+
 var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 builder.Services.AddControllers();
