@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Player } from 'generated-sources/openapi';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { PlayerDto } from 'generated-sources/openapi';
+
 
 @Component({
   selector: 'app-player-card',
@@ -8,11 +9,18 @@ import { Player } from 'generated-sources/openapi';
 })
 export class PlayerCardComponent implements OnInit {
 
-  @Input() player: Player = {id: 1, nickname: "Testos", rank : 1200};
+  @Input() player: PlayerDto = {id: 1, nickname: "Testos", rank : 1200};
+
+  @Output()
+  onAdd: EventEmitter<PlayerDto> = new EventEmitter<PlayerDto>();
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  public add(){
+    this.onAdd?.emit(this.player);
   }
 
 }

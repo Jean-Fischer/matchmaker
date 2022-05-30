@@ -78,7 +78,7 @@ public class MatchService : IMatchService
 
     public async Task<MatchDto> Get(int matchId)
     {
-        using var context = await _dbContextFactory.CreateDbContextAsync();
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
             var match = context.Matches.Include(s=>s.Participations)
             .ThenInclude(s=>s.Player)
             .FirstOrDefault(s => s.Id == matchId);
@@ -87,11 +87,12 @@ public class MatchService : IMatchService
 
     public async Task<IEnumerable<MatchDto>> GetAll(int pageSize = 100000, int pageNumber = 0)
     {
-        using var context = await _dbContextFactory.CreateDbContextAsync();
-        return context.Matches.Include(s => s.Participations)
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+        return await context.Matches.Include(s => s.Participations)
             .ThenInclude(s => s.Player)
-            .Skip(pageSize*pageNumber)
-            .Take(pageSize)
-            .ProjectTo<MatchDto>(_mapper.ConfigurationProvider);
+            .AsSplitQuery()
+            //.Skip(pageSize*pageNumber)
+            //.Take(pageSize)
+            .ProjectTo<MatchDto>(_mapper.ConfigurationProvider).ToListAsync();
     }
 }

@@ -8,14 +8,26 @@ import { Match, MatchDto, MatchService, PlayerDto, PlayerService } from 'generat
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'match-maker';
-  public match : MatchDto = {};
-  public players : PlayerDto[] = [];
-  constructor(private matchService : MatchService, private http : HttpClient, private playerService : PlayerService){
-    matchService.apiMatchMatchidGet(6).subscribe(s=>this.match = s)
-    playerService.apiPlayerGet().subscribe(s=>this.players = s);
-    
+  public matches: MatchDto[] = [];
+  public players: PlayerDto[] = [];
+  public selectedPlayer1!: PlayerDto;
+  public selectedPlayer2!: PlayerDto;
+
+  constructor(private matchService: MatchService, private http: HttpClient, private playerService: PlayerService) {
+    matchService.apiMatchGet().subscribe(s => this.matches = s)
+    playerService.apiPlayerGet().subscribe(s => this.players = s);
+
   }
 
-  
+
+  public addPlayer(player: PlayerDto) {
+    if (!this.selectedPlayer1)
+      this.selectedPlayer1 = player;
+    else {
+      if (!this.selectedPlayer2)
+        this.selectedPlayer2 = player;
+    }
+
+  }
+
 }
