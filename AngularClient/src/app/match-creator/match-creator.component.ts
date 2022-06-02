@@ -15,13 +15,14 @@ export class MatchCreatorComponent implements OnInit {
   constructor(private matchService : MatchService) { }
 
   @Output() onReset : EventEmitter<void> = new EventEmitter<void>();
+  @Output() onCreation : EventEmitter<void> = new EventEmitter<void>();
 
   ngOnInit(): void {
   }
 
 
   public createGame():void {
-    this.matchService.apiMatchCreatePost(this.player1?.id,this.player2?.id).subscribe(s=>console.log(s));
+    this.matchService.apiMatchCreatePost(this.player1?.id,this.player2?.id).subscribe(s=>this.onCreation.emit());
   }
 
   public reset():void{

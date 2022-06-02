@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { PlayerCardComponent } from './player-card/player-card.component';
 import { MatchCreatorComponent } from './match-creator/match-creator.component';
 import { MatchCardComponent } from './match-card/match-card.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { MatchCardComponent } from './match-card/match-card.component';
     BrowserModule,
     AppRoutingModule,
     ApiModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [{ provide: BASE_PATH, useValue:"https://localhost:7154"}],
   bootstrap: [AppComponent]

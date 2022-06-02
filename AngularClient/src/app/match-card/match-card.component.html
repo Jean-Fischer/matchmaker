@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center m-3">
     <div class="d-flex flex-column text-center participation p-2" [ngClass]="{'won':match.participationA?.hasWon}">
         <div>{{match.participationA?.player?.nickname}}</div>
-        <div>{{match.participationA?.finishingRank}} ({{match.participationA?.rankDifference}})</div>
+        <div>{{match.participationA?.finishingRank}} ({{match.participationA?.rankDifference}}) - ({{match.participationB?.startingRank}})</div>
     </div>
 
 
@@ -10,7 +10,7 @@
     </div>
     <div class="d-flex flex-column text-center participation p-2" [ngClass]="{'won':match.participationB?.hasWon}">
         <div>{{match.participationB?.player?.nickname}}</div>
-        <div>{{match.participationB?.finishingRank}} ({{match.participationB?.rankDifference}})</div>
+        <div>{{match.participationB?.finishingRank}} ({{match.participationB?.rankDifference}}) - ({{match.participationB?.startingRank}})</div>
     </div>
 
 

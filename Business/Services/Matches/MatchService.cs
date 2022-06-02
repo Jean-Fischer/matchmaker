@@ -68,10 +68,10 @@ public class MatchService : IMatchService
             GameResultCoefficientHelper.GetCoefficientFromResult(participations.B.HasWon));
         match.PlayDate = DateTime.Now;
         participations.A.FinishingRank =  newPlayerARating ;
-        participations.A.RankDifference =  participations.A.StartingRank - newPlayerARating ;
+        participations.A.RankDifference =  newPlayerARating - participations.A.StartingRank ;
         participations.A.Player.Rank =  newPlayerARating;
         participations.B.FinishingRank = newPlayerBRating ;
-        participations.B.RankDifference =  participations.B.StartingRank - newPlayerARating ;
+        participations.B.RankDifference =  newPlayerBRating - participations.B.StartingRank ;
         participations.B.Player.Rank = newPlayerBRating ;
 
         await context.SaveChangesAsync();
