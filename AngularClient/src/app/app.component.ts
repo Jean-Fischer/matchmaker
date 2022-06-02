@@ -10,8 +10,8 @@ import { Match, MatchDto, MatchService, PlayerDto, PlayerService } from 'generat
 export class AppComponent {
   public matches: MatchDto[] = [];
   public players: PlayerDto[] = [];
-  public selectedPlayer1!: PlayerDto;
-  public selectedPlayer2!: PlayerDto;
+  public selectedPlayer1!: PlayerDto | undefined;
+  public selectedPlayer2!: PlayerDto | undefined;
 
   constructor(private matchService: MatchService, private http: HttpClient, private playerService: PlayerService) {
     matchService.apiMatchGet().subscribe(s => this.matches = s)
@@ -27,7 +27,11 @@ export class AppComponent {
       if (!this.selectedPlayer2)
         this.selectedPlayer2 = player;
     }
+  }
 
+  public resetMatchCreator():void{
+    this.selectedPlayer1 = undefined;
+    this.selectedPlayer2 = undefined;
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatchService, PlayerDto } from 'generated-sources/openapi';
 
 @Component({
@@ -8,15 +8,13 @@ import { MatchService, PlayerDto } from 'generated-sources/openapi';
 })
 export class MatchCreatorComponent implements OnInit {
   @Input()
-  get player1():PlayerDto|undefined{return this._player1};
-  set player1(player : PlayerDto| undefined){this._player1 = player};
-  private _player1!: PlayerDto|undefined;
+  player1:PlayerDto|undefined;
 
   @Input()
-  get player2():PlayerDto|undefined{return this._player2};
-  set player2(player : PlayerDto| undefined){this._player2 = player};
-  private _player2!: PlayerDto|undefined;
+  player2:PlayerDto|undefined;
   constructor(private matchService : MatchService) { }
+
+  @Output() onReset : EventEmitter<void> = new EventEmitter<void>();
 
   ngOnInit(): void {
   }
@@ -27,7 +25,6 @@ export class MatchCreatorComponent implements OnInit {
   }
 
   public reset():void{
-    this.player1 = undefined;
-    this.player2 = undefined;
+    this.onReset.emit();
   }
 }

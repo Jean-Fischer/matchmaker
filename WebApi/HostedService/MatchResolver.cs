@@ -1,8 +1,9 @@
-﻿using Business.Services.Matches;
+﻿using System.Security.Cryptography.X509Certificates;
+using Business.Services.Matches;
 
 namespace WebApi.HostedService;
 
-public class MatchResolver : IHostedService
+public class MatchResolver : BackgroundService
 {
 
     private readonly IServiceProvider _serviceProvider;
@@ -11,20 +12,20 @@ public class MatchResolver : IHostedService
         _serviceProvider = serviceProvider;
     }
 
-    public  Task StartAsync(CancellationToken cancellationToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        
-        using (IServiceScope scope = _serviceProvider.CreateScope())
+        using var timer = new PeriodicTimer(new TimeSpan(0,0,2));
+        while (true)
         {
-            IMatchService matchService =
-                scope.ServiceProvider.GetRequiredService<IMatchService>();
+            using (IServiceScope scope = _serviceProvider.CreateScope())
+            {
+                IMatchService matchService =
+                    scope.ServiceProvider.GetRequiredService<IMatchService>();
 
-            return matchService.ResolveAllUnresolvedMatches();
+                await  matchService.ResolveAllUnresolvedMatches();
+            }
+            await timer.WaitForNextTickAsync(stoppingToken);
         }
     }
 
-    public Task StopAsync(CancellationToken cancellationToken)
-    {
-        return Task.CompletedTask;
-    }
 }
