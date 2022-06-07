@@ -17,10 +17,6 @@ public class RatingService: IRatingService
 
     
 
-    public double GetNewRating(double oldRating, GameResultCoefficient resultCoef, double expectedOutcome)
-    {
-        return oldRating + K * ((double)resultCoef - expectedOutcome);
-    }
     
     public double GetNewRating(double oldRating, double opponentRating, GameResultCoefficient resultCoef)
     {

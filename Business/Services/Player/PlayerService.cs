@@ -19,7 +19,7 @@ public class PlayerService : IPlayerService
     public async Task<PlayerDto> CreatePlayer(PlayerDto playerDto)
     {
         var player = _mapper.Map<DAL.Models.Player>(playerDto);
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
+        await using var context = await _dbContextFactory.CreateDbContextAsync();   
         var newEntry = context.Players.Add(player);
         await context.SaveChangesAsync();
         return _mapper.Map<PlayerDto>(newEntry.Entity);

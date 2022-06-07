@@ -4,6 +4,8 @@ using Business.Services.MatchSimulations;
 using Business.Services.Player;
 using Business.Services.Rating;
 using DAL.Models;
+using Hangfire;
+using Hangfire.Storage.SQLite;
 using Microsoft.EntityFrameworkCore;
 using WebApi.HostedService;
 
@@ -21,15 +23,21 @@ builder.Services.AddScoped<IPlayerService,PlayerService>();
 builder.Services.AddScoped<IMatchSimulationService,MatchSimulationService>();
 builder.Services.AddAutoMapper(typeof(BusinessMappingProfile));
 builder.Services.AddHostedService<MatchResolver>();
+builder.Services.AddHangfire(configuration => configuration
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseSQLiteStorage());
+builder.Services.AddHangfireServer();
 
 
-var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+var devCorsPolicy = "_devCorsPolicy";
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(MyAllowSpecificOrigins,
+    options.AddPolicy(devCorsPolicy,
         builder =>
         {
             builder
@@ -57,14 +65,18 @@ if (app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 //for the sake of simplicity, should be hardened
-app.UseCors(MyAllowSpecificOrigins);
+app.UseCors(devCorsPolicy);
+
 app.UseAuthorization();
 app.MapControllers();
-
+app.MapHangfireDashboard();
 
 
 
 //apply migrations on startup
 app.Services.CreateScope().ServiceProvider.GetRequiredService<MatchMakingContext>().Database.Migrate();
 
+RecurringJob.AddOrUpdate<IMatchService>($"ResolveAllUnresolvedMatch",x=>x.ResolveAllUnresolvedMatches(), Cron.Minutely);
+
 app.Run();
+
