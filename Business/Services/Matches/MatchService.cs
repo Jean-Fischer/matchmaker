@@ -96,6 +96,7 @@ public class MatchService : IMatchService
             //.Skip(pageSize*pageNumber)
             //.Take(pageSize)
             .ProjectTo<MatchDto>(_mapper.ConfigurationProvider).ToListAsync();
+        
     }
 
     public async Task ResolveAllUnresolvedMatches()

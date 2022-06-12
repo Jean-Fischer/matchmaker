@@ -28,13 +28,11 @@
     </app-match-creator>
 
     <div class="row">
-        <div class="col text-center"><button class="btn btn-primary" (click)="refreshMatches()">Refresh</button></div>
+        <div class="col-12 text-center"><button class="btn btn-primary" (click)="refreshMatches()">Refresh</button></div>
 
-        <div *ngFor="let match of matches">
+        <div *ngFor="let match of matches" class="col-4">
 
-            <div class="col">
                 <app-match-card [match]="match"></app-match-card>
-            </div>
         </div>
     </div>
 </div>
