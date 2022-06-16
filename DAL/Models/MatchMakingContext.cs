@@ -23,6 +23,7 @@ public class MatchMakingContext : DbContext
     
     public DbSet<Match> Matches { get; set; }
     public DbSet<Player> Players { get; set; }
+    public DbSet<MatchQueue> MatchQueues { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
