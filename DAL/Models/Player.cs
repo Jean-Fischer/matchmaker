@@ -10,6 +10,6 @@ public class Player
     public List<Participation> Participations { get; set; }
     public int Rank { get; set; }
     
-    public List<MatchQueue> MatchQueues { get; set; }
+    public List<MatchQueue> MatchQueues { get; set; } //Todo switch on a proper one-to-one relationship 
 
 }
