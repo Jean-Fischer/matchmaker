@@ -3,6 +3,7 @@ import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 import { MatchService } from './api/match.service';
+import { MatchQueueService } from './api/matchQueue.service';
 import { PlayerService } from './api/player.service';
 
 @NgModule({

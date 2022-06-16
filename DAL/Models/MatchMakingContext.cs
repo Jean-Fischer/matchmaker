@@ -28,8 +28,11 @@ public class MatchMakingContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Player>().HasData(
-            new Player{Id=1, Nickname = "Testos"},
-            new Player{Id=2, Nickname = "Testas"}
+            new Player{Id=1, Nickname = "Jean", Rank = 1100},
+            new Player{Id=2, Nickname = "Martin", Rank = 1200},
+            new Player{Id=3, Nickname = "Greg", Rank = 1200},
+            new Player{Id=4, Nickname = "Cosmin", Rank = 1200},
+            new Player{Id=5, Nickname = "Kevin", Rank = 1200}
         );
         
     }

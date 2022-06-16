@@ -28,5 +28,13 @@ public class MatchQueueController
     {
         return await _matchQueueService.GetAll();
     }
+
+    [HttpPost("process")]
+    public async Task ProcessQueue()
+    {
+        
+        await _matchQueueService.ProcessQueue();
+    }
+    
     
 }

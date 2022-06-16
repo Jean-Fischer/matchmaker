@@ -22,7 +22,7 @@ builder.Services.AddDbContext<MatchMakingContext>(opts => opts.UseSqlite("Data S
 builder.Services.AddScoped<IMatchService,MatchService>();
 builder.Services.AddScoped<IRatingService,RatingService>();
 builder.Services.AddScoped<IPlayerService,PlayerService>();
-builder.Services.AddScoped<IMatchMakingService,MatchMakingService>();
+builder.Services.AddScoped<IMatchMakingResolver,TrivialMatchMakingResolver>();
 builder.Services.AddScoped<IMatchQueueService,MatchQueueService>();
 builder.Services.AddScoped<IMatchSimulationService,MatchSimulationService>();
 builder.Services.AddAutoMapper(typeof(BusinessMappingProfile));
