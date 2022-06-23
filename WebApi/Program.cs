@@ -9,6 +9,7 @@ using DAL.Models;
 using Hangfire;
 using Hangfire.Storage.SQLite;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Grpc;
 using WebApi.HostedService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,14 +26,14 @@ builder.Services.AddScoped<IPlayerService,PlayerService>();
 builder.Services.AddScoped<IMatchMakingResolver,TrivialMatchMakingResolver>();
 builder.Services.AddScoped<IMatchQueueService,MatchQueueService>();
 builder.Services.AddScoped<IMatchSimulationService,MatchSimulationService>();
-builder.Services.AddAutoMapper(typeof(BusinessMappingProfile));
+builder.Services.AddAutoMapper(typeof(BusinessMappingProfile),typeof(MapProfile));
 builder.Services.AddHostedService<MatchResolver>();
 builder.Services.AddHangfire(configuration => configuration
     .UseSimpleAssemblyNameTypeSerializer()
     .UseRecommendedSerializerSettings()
     .UseSQLiteStorage());
 builder.Services.AddHangfireServer();
-
+builder.Services.AddGrpc();
 
 
 var devCorsPolicy = "_devCorsPolicy";
@@ -74,6 +75,8 @@ app.UseCors(devCorsPolicy);
 app.UseAuthorization();
 app.MapControllers();
 app.MapHangfireDashboard();
+app.UseGrpcWeb();
+app.MapGrpcService<MatchGrpcService>().EnableGrpcWeb();
 
 
 

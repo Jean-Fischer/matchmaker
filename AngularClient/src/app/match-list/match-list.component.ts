@@ -10,7 +10,7 @@ import { map, Observable, Subject } from 'rxjs';
 export class MatchListComponent implements OnInit {
   public matches$!: Observable<MatchDto[]>;
   @Input()
-  reloading!: Subject<boolean>;
+  reloading: Subject<boolean> = new Subject<boolean>();
 
 
   constructor(private matchService:MatchService) { }

@@ -13,6 +13,9 @@ import { QueuePageComponent } from './queue-page/queue-page.component';
 import { MatchCreatorPageComponent } from './match-creator-page/match-creator-page.component';
 import { MatchListComponent } from './match-list/match-list.component';
 import { ToastrModule } from 'ngx-toastr';
+import { GrpcCoreModule } from '@ngx-grpc/core';
+import { GrpcWebClientModule } from '@ngx-grpc/grpc-web-client';
+import { MatchQueueCardComponent } from './match-queue-card/match-queue-card.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,8 @@ import { ToastrModule } from 'ngx-toastr';
     MatchCardComponent,
     QueuePageComponent,
     MatchCreatorPageComponent,
-    MatchListComponent
+    MatchListComponent,
+    MatchQueueCardComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +34,10 @@ import { ToastrModule } from 'ngx-toastr';
     ApiModule,
     ToastrModule.forRoot(),
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    GrpcCoreModule.forRoot(),
+    GrpcWebClientModule.forRoot({
+      settings: { host: 'https://localhost:7154' }})
   ],
   providers: [{ provide: BASE_PATH, useValue:"https://localhost:7154"}],
   bootstrap: [AppComponent]

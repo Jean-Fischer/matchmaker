@@ -9,12 +9,9 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
-model/match.ts
 model/matchDto.ts
 model/matchQueueDto.ts
 model/models.ts
-model/participation.ts
 model/participationDto.ts
-model/player.ts
 model/playerDto.ts
 variables.ts
