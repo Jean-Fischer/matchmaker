@@ -78,20 +78,20 @@ export class MatchGprcServiceClient {
       });
     },
     /**
-     * Bidirectional streaming: /MatchGprcService/GetAllRequested
+     * Server streaming: /MatchGprcService/GetAllRefreshed
      *
      * @param requestMessage Request message
      * @param requestMetadata Request metadata
      * @returns Observable<GrpcEvent<thisProto.Response>>
      */
-    getAllRequested: (
-      requestData: Observable<thisProto.Request>,
+    getAllRefreshed: (
+      requestData: thisProto.Request,
       requestMetadata = new GrpcMetadata()
     ): Observable<GrpcEvent<thisProto.Response>> => {
       return this.handler.handle({
-        type: GrpcCallType.bidiStream,
+        type: GrpcCallType.serverStream,
         client: this.client,
-        path: '/MatchGprcService/GetAllRequested',
+        path: '/MatchGprcService/GetAllRefreshed',
         requestData,
         requestMetadata,
         requestClass: thisProto.Request,
@@ -141,18 +141,18 @@ export class MatchGprcServiceClient {
   }
 
   /**
-   * Bidirectional streaming @/MatchGprcService/GetAllRequested
+   * Server streaming @/MatchGprcService/GetAllRefreshed
    *
    * @param requestMessage Request message
    * @param requestMetadata Request metadata
    * @returns Observable<thisProto.Response>
    */
-  getAllRequested(
-    requestData: Observable<thisProto.Request>,
+  getAllRefreshed(
+    requestData: thisProto.Request,
     requestMetadata = new GrpcMetadata()
   ): Observable<thisProto.Response> {
     return this.$raw
-      .getAllRequested(requestData, requestMetadata)
+      .getAllRefreshed(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 }

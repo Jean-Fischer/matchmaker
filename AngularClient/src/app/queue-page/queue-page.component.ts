@@ -22,7 +22,8 @@ export class QueuePageComponent implements OnInit {
     this.refreshPlayers();
     this.refreshQueue();
     this.matchClient.getAll(new Request).subscribe(s=>console.log("getAll", s));
-    this.matchClient.getAllStream(new Request).subscribe(s=>console.log("getAllStream", s));
+    //this.matchClient.getAllStream(new Request).subscribe(s=>console.log("getAllStream", s));
+    this.matchClient.getAllRefreshed(new Request()).subscribe(s=>console.log("getAllRefreshed",s));
   }
 
   public addPlayer(player: PlayerDto) {

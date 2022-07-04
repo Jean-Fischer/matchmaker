@@ -33,17 +33,21 @@ public class MatchGrpcService : MatchGprcService.MatchGprcServiceBase
     public override async Task GetAllStream(Request request, IServerStreamWriter<MatchGrpcDto> responseStream, ServerCallContext context)
     {
         var res = await _matchService.GetAll(99999, 0);
-        
-        foreach (var message in res)
+        while (!context.CancellationToken.IsCancellationRequested)
         {
-            await responseStream.WriteAsync(_mapper.Map<MatchGrpcDto>(message));
+            //timer every 10 seconds
+            foreach (var message in res)
+            {
+                await responseStream.WriteAsync(_mapper.Map<MatchGrpcDto>(message));
+            }
         }
+        
     }
 
-    public override async Task GetAllRequested(IAsyncStreamReader<Request> requestStream, IServerStreamWriter<Response> responseStream, ServerCallContext context)
+    public override async  Task GetAllRefreshed(Request request, IServerStreamWriter<Response> responseStream, ServerCallContext context)
     {
-        
-        await foreach(var item in requestStream.ReadAllAsync())
+        var timer = new PeriodicTimer(TimeSpan.FromSeconds(10));
+        while (!context.CancellationToken.IsCancellationRequested && await timer.WaitForNextTickAsync() )
         {
             var res =await   _matchService.GetAll(99999, 0);
             var mappedRes = _mapper.Map<IEnumerable<MatchGrpcDto>>(res);

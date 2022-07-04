@@ -17,7 +17,6 @@ export class MatchListComponent implements OnInit {
 
   ngOnInit(): void {
     this.refreshMatches();
-    // this.reloading.pipe(map(() => this.refreshMatches()));
     this.reloading.subscribe(()=>this.refreshMatches());
     
   }
