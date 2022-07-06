@@ -47,9 +47,7 @@ export class MatchCreatorPageComponent implements OnInit {
     rank: new FormControl(1200, Validators.required),
   });
 
-  public refreshMatches():void{
-    console.log("Not implemented");
-  }
+
 
   onSubmit(): void {
     console.warn(this.newPlayerForm.value);

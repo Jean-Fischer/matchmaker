@@ -16,6 +16,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { GrpcCoreModule } from '@ngx-grpc/core';
 import { GrpcWebClientModule } from '@ngx-grpc/grpc-web-client';
 import { MatchQueueCardComponent } from './match-queue-card/match-queue-card.component';
+import { MatchHub } from './signalR/matchHub';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -35,11 +37,12 @@ import { MatchQueueCardComponent } from './match-queue-card/match-queue-card.com
     ToastrModule.forRoot(),
     HttpClientModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
     GrpcCoreModule.forRoot(),
     GrpcWebClientModule.forRoot({
       settings: { host: 'https://localhost:7154' }})
   ],
-  providers: [{ provide: BASE_PATH, useValue:"https://localhost:7154"}],
+  providers: [{ provide: BASE_PATH, useValue:"https://localhost:7154"}, MatchHub],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

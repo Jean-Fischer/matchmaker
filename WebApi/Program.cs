@@ -11,6 +11,7 @@ using Hangfire.Storage.SQLite;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Grpc;
 using WebApi.HostedService;
+using WebApi.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,7 @@ builder.Services.AddHangfire(configuration => configuration
     .UseSQLiteStorage());
 builder.Services.AddHangfireServer();
 builder.Services.AddGrpc();
+builder.Services.AddSignalR();
 
 
 var devCorsPolicy = "_devCorsPolicy";
@@ -48,7 +50,9 @@ builder.Services.AddCors(options =>
             builder
                 .AllowAnyHeader()
                 .AllowAnyMethod()
-                .WithOrigins("*")
+                
+                .WithOrigins("http://localhost:4044")
+                .AllowCredentials()
                 ;
         });
 });
@@ -77,13 +81,14 @@ app.MapControllers();
 app.MapHangfireDashboard();
 app.UseGrpcWeb();
 app.MapGrpcService<MatchGrpcService>().EnableGrpcWeb();
+app.MapHub<MatchHub>("/matchHub");
 
 
 
 //apply migrations on startup
 app.Services.CreateScope().ServiceProvider.GetRequiredService<MatchMakingContext>().Database.Migrate();
 
-RecurringJob.AddOrUpdate<IMatchService>($"ResolveAllUnresolvedMatch",x=>x.ResolveAllUnresolvedMatches(), Cron.Minutely);
+//RecurringJob.AddOrUpdate<IMatchService>($"ResolveAllUnresolvedMatch",x=>x.ResolveAllUnresolvedMatches(),"0/20 * * ? * *");
 
 app.Run();
 

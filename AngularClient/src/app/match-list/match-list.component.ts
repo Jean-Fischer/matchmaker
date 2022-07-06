@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatchDto, MatchService } from 'generated-sources/openapi';
 import { map, Observable, Subject } from 'rxjs';
+import { MatchHub } from '../signalR/matchHub';
 
 @Component({
   selector: 'app-match-list',
@@ -13,14 +14,18 @@ export class MatchListComponent implements OnInit {
   reloading: Subject<boolean> = new Subject<boolean>();
 
 
-  constructor(private matchService:MatchService) { }
+  constructor(private matchService:MatchService,private matchHub:MatchHub) { }
 
   ngOnInit(): void {
     this.refreshMatches();
-    this.reloading.subscribe(()=>this.refreshMatches());
+    //this.reloading.subscribe(()=>this.refreshMatches());
     
   }
   public refreshMatches(): void {
-    this.matches$ = this.matchService.apiMatchGet();
+    //this.matches$ = this.matchService.apiMatchGet();
+    // this.matchHub.signalRObservable().subscribe(s=>console.log(s));
+    // this.matches$ = this.matchHub.signalRObservable();
+    this.matches$ = this.matchHub.getAllStream();
+    
   }
 }

@@ -1,15 +1,23 @@
 <div class="row">
-    <div class="col-2 text-center h-100"><p>Available player waiting :</p></div>
-    <div class="col-2" *ngFor="let player of unlistedPlayers$ | async">
-        <app-player-card [player]="player" (onAdd)="addPlayer(player)"></app-player-card>
+    <div class="col-2 text-center h-100">
+        <p>Available player waiting :</p>
+    </div>
+    <div class="row col">
+        <div class="col-2" *ngFor="let player of unlistedPlayers$ | async">
+            <app-player-card [player]="player" (onAdd)="addPlayer(player)"></app-player-card>
+        </div>
     </div>
 </div>
 
 <div class="row my-1">
-    <div class="col-2 text-center h-100"><p>Currently in Queue :</p></div>
-    <div class="col-2" *ngFor="let matchQueue of matchQueues$ | async">
-        <!-- <div>{{matchQueue.player?.nickname}} since {{matchQueue.joinDate}}</div> -->
-        <app-match-queue-card [matchQueue]="matchQueue"></app-match-queue-card>
+    <div class="col-2 text-center h-100">
+        <p>Currently in Queue :</p>
+    </div>
+    <div class="row col">
+        <div class="col-2" *ngFor="let matchQueue of matchQueues$ | async">
+            <!-- <div>{{matchQueue.player?.nickname}} since {{matchQueue.joinDate}}</div> -->
+            <app-match-queue-card [matchQueue]="matchQueue"></app-match-queue-card>
+        </div>
     </div>
 </div>
 <button (click)="process()">Process Queue</button>

@@ -4,6 +4,7 @@ import { MatchGprcServiceClient } from 'generated-sources/grpc/match.pbsc';
 import { MatchQueueDto, MatchQueueService, PlayerDto, PlayerService } from 'generated-sources/openapi';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Subject } from 'rxjs';
+import { MatchHub } from '../signalR/matchHub';
 
 @Component({
   templateUrl: './queue-page.component.html',
@@ -21,9 +22,10 @@ export class QueuePageComponent implements OnInit {
   ngOnInit(): void {
     this.refreshPlayers();
     this.refreshQueue();
-    this.matchClient.getAll(new Request).subscribe(s=>console.log("getAll", s));
+    //this.matchClient.getAll(new Request).subscribe(s=>console.log("getAll", s));
     //this.matchClient.getAllStream(new Request).subscribe(s=>console.log("getAllStream", s));
-    this.matchClient.getAllRefreshed(new Request()).subscribe(s=>console.log("getAllRefreshed",s));
+    //this.matchClient.getAllRefreshed(new Request()).subscribe(s=>console.log("getAllRefreshed",s));
+    
   }
 
   public addPlayer(player: PlayerDto) {
