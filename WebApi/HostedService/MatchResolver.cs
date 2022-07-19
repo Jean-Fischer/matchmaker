@@ -19,7 +19,7 @@ public class MatchResolver : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        using var timer = new PeriodicTimer(new TimeSpan(0,0,2));
+        using var timer = new PeriodicTimer(new TimeSpan(0,0,20));
         while (true)
         {
             using (IServiceScope scope = _serviceProvider.CreateScope())

@@ -5,10 +5,12 @@ using Business.Services.MatchQueue;
 using Business.Services.MatchSimulations;
 using Business.Services.Player;
 using Business.Services.Rating;
+using Business.Technical;
 using DAL.Models;
 using Hangfire;
 using Hangfire.Storage.SQLite;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using WebApi.Grpc;
 using WebApi.HostedService;
 using WebApi.SignalR;
@@ -17,7 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-
+//builder.Host.UseSerilog();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContextFactory<MatchMakingContext>(opts => opts.UseSqlite("Data Source=matchmaking.db"));
 builder.Services.AddDbContext<MatchMakingContext>(opts => opts.UseSqlite("Data Source=matchmaking.db"));
@@ -27,6 +29,7 @@ builder.Services.AddScoped<IPlayerService,PlayerService>();
 builder.Services.AddScoped<IMatchMakingResolver,TrivialMatchMakingResolver>();
 builder.Services.AddScoped<IMatchQueueService,MatchQueueService>();
 builder.Services.AddScoped<IMatchSimulationService,MatchSimulationService>();
+builder.Services.AddSingleton<SocketService>();
 builder.Services.AddAutoMapper(typeof(BusinessMappingProfile),typeof(MapProfile));
 builder.Services.AddHostedService<MatchResolver>();
 builder.Services.AddHangfire(configuration => configuration
