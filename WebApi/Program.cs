@@ -10,7 +10,6 @@ using DAL.Models;
 using Hangfire;
 using Hangfire.Storage.SQLite;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
 using WebApi.Grpc;
 using WebApi.HostedService;
 using WebApi.SignalR;
