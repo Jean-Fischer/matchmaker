@@ -34,10 +34,10 @@ public class MatchService : IMatchService
         _socketService = socketService;
     }
 
-    public async Task<int> CreateGame(int playerIdA, int playerIdB)
+    public async Task<int> CreateGame(int playerIdA, int playerIdB, CancellationToken cancellationToken)
     {
-        var participationA = await CreateParticipation(playerIdA);
-        var participationB = await CreateParticipation(playerIdB);
+        var participationA = await CreateParticipation(playerIdA, cancellationToken);
+        var participationB = await CreateParticipation(playerIdB, cancellationToken);
 
         var match = new Match()
         {
@@ -45,13 +45,14 @@ public class MatchService : IMatchService
             RegistrationDate = DateTime.Now
         };
         _context.Matches.Add(match);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
         return match.Id;
     }
 
-    private async Task<Participation> CreateParticipation(int playerId)
+    private async Task<Participation> CreateParticipation(int playerId, CancellationToken cancellationToken)
     {
-        var player = _context.Players.SingleOrDefault(s => s.Id == playerId);
+        var player =
+            await _context.Players.SingleOrDefaultAsync(s => s.Id == playerId, cancellationToken: cancellationToken);
         if (player == null) throw new InvalidDataException($"No player found for id {playerId}");
         var participation = new Participation()
         {
@@ -61,9 +62,9 @@ public class MatchService : IMatchService
         return participation;
     }
 
-    public async Task<Match> ResolveGame(int matchId)
+    public async Task<Match> ResolveGame(int matchId, CancellationToken cancellationToken)
     {
-        using var context = await _dbContextFactory.CreateDbContextAsync();
+        using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
         var match = context.Matches
             .Include(s => s.Participations)
             .ThenInclude(s => s.Player)
@@ -88,40 +89,41 @@ public class MatchService : IMatchService
         return match;
     }
 
-    public async Task<MatchDto> Get(int matchId)
+    public async Task<MatchDto> Get(int matchId, CancellationToken cancellationToken)
     {
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
+        await using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
         var match = context.Matches.Include(s => s.Participations)
             .ThenInclude(s => s.Player)
             .FirstOrDefault(s => s.Id == matchId);
         return _mapper.Map<MatchDto>(match);
     }
 
-    public async Task<IEnumerable<MatchDto>> GetAll(int pageSize = 100000, int pageNumber = 0)
+    public async Task<IEnumerable<MatchDto>> GetAll(CancellationToken cancellationToken, int pageSize = 100000,
+        int pageNumber = 0)
     {
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
+        await using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
         return await context.Matches.Include(s => s.Participations)
             .ThenInclude(s => s.Player)
             .AsSplitQuery()
             .OrderByDescending(s => s.RegistrationDate)
             .Skip(pageSize * pageNumber)
             .Take(pageSize)
-            .ProjectTo<MatchDto>(_mapper.ConfigurationProvider).ToListAsync();
+            .ProjectTo<MatchDto>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken: cancellationToken);
     }
 
-    public async Task ResolveAllUnresolvedMatches()
+    public async Task ResolveAllUnresolvedMatches(CancellationToken cancellationToken)
     {
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
+        await using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
         var unresolvedMatches = context.Matches.Where(s => s.PlayDate == null).ToList();
         foreach (var match in unresolvedMatches)
         {
-            await ResolveGame(match.Id);
+            await ResolveGame(match.Id, cancellationToken);
         }
 
 
         var pubSocket = _socketService.PublisherSocket;
-        
-        
+
+
         pubSocket.SendMoreFrame("RefreshMatches").SendFrame("test");
     }
 }

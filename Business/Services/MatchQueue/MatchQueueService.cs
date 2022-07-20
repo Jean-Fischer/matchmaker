@@ -14,6 +14,7 @@ public class MatchQueueService :IMatchQueueService
     private readonly IMapper _mapper;
     private readonly IMatchMakingResolver _matchMakingResolver;
     private readonly IMatchService _matchService;
+
     public MatchQueueService(IDbContextFactory<MatchMakingContext> dbContextFactory, IMapper mapper, IMatchMakingResolver matchMakingResolver, IMatchService matchService)
     {
         _dbContextFactory = dbContextFactory;
@@ -22,42 +23,43 @@ public class MatchQueueService :IMatchQueueService
         _matchService = matchService;
     }
 
-    public async Task<MatchQueueDto> AddToQueue(int playerId)
+    public async Task<MatchQueueDto> AddToQueue(int playerId, CancellationToken cancellationToken)
     {
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-        var player = await context.Players.FirstOrDefaultAsync(s => s.Id == playerId);
+        await using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+        var player = await context.Players.FirstOrDefaultAsync(s => s.Id == playerId, cancellationToken: cancellationToken);
         if (player == null) throw new InvalidDataException($"No player found for id {playerId}");
 
         if (context.MatchQueues.Any(s => s.PlayerId == playerId))
             throw new ArgumentException($"Player is already in queue");
 
         var matchqueue = new DAL.Models.MatchQueue() {JoinDate = DateTime.Now,PlayerId = playerId};
-        var entry = await context.MatchQueues.AddAsync(matchqueue);
-        await context.SaveChangesAsync();
+        var entry = await context.MatchQueues.AddAsync(matchqueue, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
         return _mapper.Map<MatchQueueDto>(entry.Entity);
 
     }
 
-    public async Task<IEnumerable<MatchQueueDto>> GetAll()
+    public async Task<IEnumerable<MatchQueueDto>> GetAll(CancellationToken cancellationToken)
     {
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
+        await using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
         return context.MatchQueues.ProjectTo<MatchQueueDto>(_mapper.ConfigurationProvider).ToList();
     }
     
-    public async Task ProcessQueue()
+    public async Task ProcessQueue(CancellationToken cancellationToken)
     {
 
-        var matchQueues = await GetAll();
-        using var context = await _dbContextFactory.CreateDbContextAsync();
-        var matchings = await _matchMakingResolver.ResolveMatchings(matchQueues);
+        var matchQueues = await GetAll(cancellationToken);
+        using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+        var matchings = await _matchMakingResolver.ResolveMatchings(matchQueues,cancellationToken);
         foreach (var match in matchings)
         {
-            await _matchService.CreateGame(match.Player1.Player.Id, match.Player2.Player.Id);
-            var toDelete = await context.MatchQueues.Where(s => s.Id ==match.Player1.Id || s.Id == match.Player2.Id ).ToListAsync();
+            await _matchService.CreateGame(match.Player1.Player.Id, match.Player2.Player.Id, cancellationToken);
+            var toDelete = await context.MatchQueues.Where(s => s.Id ==match.Player1.Id || s.Id == match.Player2.Id ).ToListAsync(cancellationToken: cancellationToken);
             context.MatchQueues.RemoveRange(toDelete);
         }
 
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(cancellationToken);
 
     }
+
 }

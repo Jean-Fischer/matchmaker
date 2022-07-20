@@ -2,7 +2,7 @@
 
 namespace Business.Technical;
 
-public class SocketService : IDisposable
+public class SocketService : IAsyncDisposable
 {
     
     public PublisherSocket PublisherSocket { get;  }
@@ -24,11 +24,10 @@ public class SocketService : IDisposable
         return socket;
     }
      
-    
-    
-    
-    public void Dispose()
+
+    public  ValueTask DisposeAsync()
     {
         PublisherSocket.Dispose();
+        return new ValueTask();
     }
 }

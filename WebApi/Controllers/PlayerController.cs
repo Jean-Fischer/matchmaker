@@ -3,41 +3,38 @@ using Business.Services.Player;
 using DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace WebApi.Controllers;
+
 [ApiController]
 [Route("api/[controller]")]
 public class PlayerController
 {
     private readonly IDbContextFactory<MatchMakingContext> _dbContextFactory;
     private readonly IPlayerService _playerService;
-    
+
     public PlayerController(IDbContextFactory<MatchMakingContext> dbContextFactory, IPlayerService playerService)
     {
         _dbContextFactory = dbContextFactory;
         _playerService = playerService;
     }
-    
-    
+
+
     [HttpGet("")]
-    public async Task<IEnumerable<PlayerDto>> GetPlayers()
+    public async Task<IEnumerable<PlayerDto>> GetPlayers(CancellationToken cancellationToken)
     {
-        return await _playerService.GetAll();
+        return await _playerService.GetAll(cancellationToken);
     }
-    
+
     [HttpGet("unlisted")]
-    public async Task<IEnumerable<PlayerDto>> GetUnlistedPlayers()
+    public async Task<IEnumerable<PlayerDto>> GetUnlistedPlayers(CancellationToken cancellationToken)
     {
-        return await  _playerService.GetUnlisted();
+        return await _playerService.GetUnlisted(cancellationToken);
     }
 
     [HttpPost("")]
-    public async Task<PlayerDto> CreatePlayer(PlayerDto player)
+    public async Task<PlayerDto> CreatePlayer(PlayerDto player, CancellationToken cancellationToken)
     {
-        return await _playerService.CreatePlayer(player);
-    } 
-    
-    
-    
+        return await _playerService.CreatePlayer(player, cancellationToken);
+    }
 }
