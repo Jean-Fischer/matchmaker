@@ -1,13 +1,15 @@
-﻿using NetMQ.Sockets;
+﻿using Microsoft.Extensions.Configuration;
+using NetMQ.Sockets;
 
 namespace Business.Technical;
 
 public class SocketService : IAsyncDisposable
 {
-    private readonly string connectionPath = "inproc://pubsub-socket";
+    private readonly string connectionPath;
 
-    public SocketService()
+    public SocketService(IConfiguration _configuration)
     {
+        connectionPath = _configuration["NetMQ:PubSubSocketURL"];
         PublisherSocket = new PublisherSocket();
         PublisherSocket.Options.SendHighWatermark = 1000;
         PublisherSocket.Bind(connectionPath);
