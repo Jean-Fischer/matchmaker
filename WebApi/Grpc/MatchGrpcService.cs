@@ -56,13 +56,20 @@ public class MatchGrpcService : MatchGprcService.MatchGprcServiceBase
 
         subSocket.Subscribe("RefreshMatches");
 
+        var firstLoop = true; //dont wait for refresh signal on the first loop
         while (!context.CancellationToken.IsCancellationRequested)
         {
             try
             {
-                var topic = subSocket.ReceiveFrameString();
-                var messageReceived = subSocket.ReceiveFrameString();   
-
+                if (!firstLoop)
+                {
+                    var topic = subSocket.ReceiveFrameString();
+                    var messageReceived = subSocket.ReceiveFrameString();
+                }
+                else
+                {
+                    firstLoop = !firstLoop;
+                }
                 var res = await _matchService.GetAll(99999, 0);
                 var mappedRes = _mapper.Map<IEnumerable<MatchGrpcDto>>(res);
                 var response = new Response();
