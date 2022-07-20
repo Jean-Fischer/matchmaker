@@ -19,7 +19,7 @@ public class MatchResolver : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         using var timer = new PeriodicTimer(new TimeSpan(0, 0, 20));
-        while (true)
+        while (!stoppingToken.IsCancellationRequested)
         {
             using (var scope = _serviceProvider.CreateScope())
             {
@@ -29,7 +29,6 @@ public class MatchResolver : BackgroundService
                 await matchService.ResolveAllUnresolvedMatches(stoppingToken);
                 await _hubContext.Clients.All.SendAsync("RefreshMatchList",
                     await matchService.GetAll(stoppingToken, 99999, 0), stoppingToken);
-                //await _hubContext.Clients.All.SendCoreAsync();
             }
 
             await timer.WaitForNextTickAsync(stoppingToken);

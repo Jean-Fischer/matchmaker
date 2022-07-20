@@ -5,13 +5,11 @@ namespace WebApi.SignalR;
 
 public class MatchHub : Hub
 {
-    private readonly IHttpContextAccessor _context;
     private readonly IMatchService _matchService;
 
-    public MatchHub(IMatchService matchService, IHttpContextAccessor context)
+    public MatchHub(IMatchService matchService)
     {
         _matchService = matchService;
-        _context = context;
     }
 
     public override async Task OnConnectedAsync()

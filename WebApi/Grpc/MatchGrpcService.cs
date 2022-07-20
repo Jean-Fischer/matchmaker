@@ -55,8 +55,8 @@ public class MatchGrpcService : MatchGprcService.MatchGprcServiceBase
             {
                 if (!firstLoop)
                 {
-                    var topic = subSocket.ReceiveFrameString();
-                    var messageReceived = subSocket.ReceiveFrameString();
+                    subSocket.ReceiveFrameString();
+                    subSocket.ReceiveFrameString();
                 }
                 else
                 {

@@ -4,11 +4,8 @@ namespace Business.Technical;
 
 public class SocketService : IAsyncDisposable
 {
-    
-    public PublisherSocket PublisherSocket { get;  }
+    private readonly string connectionPath = "inproc://pubsub-socket";
 
-    private readonly string connectionPath = "inproc://inproc-demo";
-    
     public SocketService()
     {
         PublisherSocket = new PublisherSocket();
@@ -16,18 +13,20 @@ public class SocketService : IAsyncDisposable
         PublisherSocket.Bind(connectionPath);
     }
 
-    public SubscriberSocket GetSubscriberSocket()
-    {
-        var socket =  new SubscriberSocket();
+    public PublisherSocket PublisherSocket { get; }
 
-        socket.Connect(connectionPath);
-        return socket;
-    }
-     
 
-    public  ValueTask DisposeAsync()
+    public ValueTask DisposeAsync()
     {
         PublisherSocket.Dispose();
         return new ValueTask();
+    }
+
+    public SubscriberSocket GetSubscriberSocket()
+    {
+        var socket = new SubscriberSocket();
+
+        socket.Connect(connectionPath);
+        return socket;
     }
 }

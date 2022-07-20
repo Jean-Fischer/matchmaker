@@ -1,8 +1,6 @@
 ﻿using Business.Dto;
 using Business.Services.Player;
-using DAL.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace WebApi.Controllers;
 
@@ -10,12 +8,10 @@ namespace WebApi.Controllers;
 [Route("api/[controller]")]
 public class PlayerController
 {
-    private readonly IDbContextFactory<MatchMakingContext> _dbContextFactory;
     private readonly IPlayerService _playerService;
 
-    public PlayerController(IDbContextFactory<MatchMakingContext> dbContextFactory, IPlayerService playerService)
+    public PlayerController(IPlayerService playerService)
     {
-        _dbContextFactory = dbContextFactory;
         _playerService = playerService;
     }
 
