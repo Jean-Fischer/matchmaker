@@ -9,6 +9,7 @@ using Business.Technical;
 using DAL.Models;
 using Hangfire;
 using Hangfire.Storage.SQLite;
+using HotChocolate.AspNetCore.Voyager;
 using Microsoft.EntityFrameworkCore;
 using WebApi.GraphQL;
 using WebApi.Grpc;
@@ -20,8 +21,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContextFactory<MatchMakingContext>(opts => opts.UseSqlite(builder.Configuration["SQLite:Main"]));
-builder.Services.AddDbContext<MatchMakingContext>(opts => opts.UseSqlite(builder.Configuration["SQLite:Main"]));
+builder.Services.AddDbContextFactory<MatchMakingContext>(opts => opts.UseLazyLoadingProxies().UseSqlite(builder.Configuration["SQLite:Main"],o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
+builder.Services.AddDbContext<MatchMakingContext>(opts => opts.UseLazyLoadingProxies().UseSqlite(builder.Configuration["SQLite:Main"],o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 builder.Services.AddScoped<IMatchService, MatchService>();
 builder.Services.AddScoped<IRatingService, RatingService>();
 builder.Services.AddScoped<IPlayerService, PlayerService>();
@@ -89,6 +90,7 @@ app.UseGrpcWeb();
 app.MapGrpcService<MatchGrpcService>().EnableGrpcWeb();
 app.MapHub<MatchHub>("/matchHub");
 app.MapGraphQL();
+app.UseVoyager("/graphql","/voyager");
 
 //apply migrations on startup
 app.Services.CreateScope().ServiceProvider.GetRequiredService<MatchMakingContext>().Database.Migrate();
