@@ -4,8 +4,8 @@ public class Player
 {
     public int Id { get; set; }
     public string Nickname { get; set; }
-    public List<Participation> Participations { get; set; }
+    public virtual List<Participation> Participations { get; set; }
     public int Rank { get; set; }
 
-    public List<MatchQueue> MatchQueues { get; set; }
+    public virtual List<MatchQueue> MatchQueues { get; set; }
 }
