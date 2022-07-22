@@ -10,6 +10,7 @@ using DAL.Models;
 using Hangfire;
 using Hangfire.Storage.SQLite;
 using Microsoft.EntityFrameworkCore;
+using WebApi.GraphQL;
 using WebApi.Grpc;
 using WebApi.HostedService;
 using WebApi.SignalR;
@@ -37,6 +38,10 @@ builder.Services.AddHangfire(configuration => configuration
 builder.Services.AddHangfireServer();
 builder.Services.AddGrpc();
 builder.Services.AddSignalR();
+
+builder.Services.AddGraphQLServer()
+    .AddQueryType<Query>()
+    .RegisterDbContext<MatchMakingContext>();
 
 
 var devCorsPolicy = "_devCorsPolicy";
@@ -77,12 +82,13 @@ app.UseHttpsRedirection();
 app.UseCors(devCorsPolicy);
 
 app.UseAuthorization();
+
 app.MapControllers();
 app.MapHangfireDashboard();
 app.UseGrpcWeb();
 app.MapGrpcService<MatchGrpcService>().EnableGrpcWeb();
 app.MapHub<MatchHub>("/matchHub");
-
+app.MapGraphQL();
 
 //apply migrations on startup
 app.Services.CreateScope().ServiceProvider.GetRequiredService<MatchMakingContext>().Database.Migrate();
