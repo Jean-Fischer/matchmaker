@@ -16,6 +16,7 @@ public class MatchResolver : BackgroundService
         _hubContext = hubContext;
     }
 
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         using var timer = new PeriodicTimer(new TimeSpan(0, 0, 20));
@@ -28,7 +29,7 @@ public class MatchResolver : BackgroundService
 
                 await matchService.ResolveAllUnresolvedMatches(stoppingToken);
                 await _hubContext.Clients.All.SendAsync("RefreshMatchList",
-                    await matchService.GetAll(stoppingToken, 99999, 0), stoppingToken);
+                    await matchService.GetAll(stoppingToken), stoppingToken);
             }
 
             await timer.WaitForNextTickAsync(stoppingToken);

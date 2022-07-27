@@ -1217,6 +1217,23 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.6.tgz#d5e0706cf8c6acd8c6032f8d54070af261bbbb2f"
   integrity sha512-ws57AidsDvREKrZKYffXddNkyaF14iHNHm8VQnZH6t99E8gczjNN0GpvcGny0imC80yQ0tHz1xVUKk/KFQSUyA==
 
+"@easydata/core@^1.4.10":
+  version "1.4.10"
+  resolved "https://registry.yarnpkg.com/@easydata/core/-/core-1.4.10.tgz#51933a2db98d55e824cb0a984828a77c7b591a42"
+  integrity sha512-+rG+sRRVAQaFW4zcf7tTS81lib2lMAno0wfBZcQU/FduBlcqxEVIAvS2W3nx2cnnUwG+Qy6yFujVTwC5gGgA9w==
+
+"@easydata/crud@^1.4.10":
+  version "1.4.10"
+  resolved "https://registry.yarnpkg.com/@easydata/crud/-/crud-1.4.10.tgz#40981f4f17939203c85d5ac98a1cf88dbd2c4964"
+  integrity sha512-rtUBDRGvkncYTV6maHivcZOAZ13XjnKnOxT2NB0y92OuQBQNuSAZNZQhWPAIIyUSdxlzuZWZc34hL0OTrY6TcA==
+
+"@easydata/ui@^1.4.10":
+  version "1.4.10"
+  resolved "https://registry.yarnpkg.com/@easydata/ui/-/ui-1.4.10.tgz#f34f8926f0a6150decb014fbc8849b7dddc8dc2d"
+  integrity sha512-UzIZfoyppwv4LLbojTGGTRUQ2ACAy9cLT15QG0RZl0VDL5OIW4pL5yqy/PLuUzNyaGeYxES7qxACurbPRXiBfg==
+  dependencies:
+    "@juggle/resize-observer" "^3.2.0"
+
 "@gar/promisify@^1.0.1", "@gar/promisify@^1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"
@@ -1285,6 +1302,11 @@
   dependencies:
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
+
+"@juggle/resize-observer@^3.2.0":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@juggle/resize-observer/-/resize-observer-3.3.1.tgz#b50a781709c81e10701004214340f25475a171a0"
+  integrity sha512-zMM9Ds+SawiUkakS7y94Ymqx+S0ORzpG3frZirN3l+UlXUmSUR7hF4wxCVqW+ei94JzV5kt0uXBcoOEAuiydrw==
 
 "@microsoft/signalr@^6.0.7":
   version "6.0.7"
