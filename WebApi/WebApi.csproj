@@ -9,6 +9,8 @@
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="11.0.1" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+        <PackageReference Include="EasyData.AspNetCore" Version="1.4.3" />
+        <PackageReference Include="EasyData.EntityFrameworkCore.Relational" Version="1.4.3" />
         <PackageReference Include="Grpc.AspNetCore" Version="2.46.0" />
         <PackageReference Include="Grpc.AspNetCore.Web" Version="2.46.0" />
         <PackageReference Include="Hangfire.AspNetCore" Version="1.8.0-beta4" />

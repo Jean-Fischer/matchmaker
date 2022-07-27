@@ -18,6 +18,7 @@ import { GrpcWebClientModule } from '@ngx-grpc/grpc-web-client';
 import { MatchQueueCardComponent } from './match-queue-card/match-queue-card.component';
 import { MatchHub } from './signalR/matchHub';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { EasyDataComponent } from './easydata/easydata.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     QueuePageComponent,
     MatchCreatorPageComponent,
     MatchListComponent,
-    MatchQueueCardComponent
+    MatchQueueCardComponent,
+    EasyDataComponent
   ],
   imports: [
     BrowserModule,
@@ -40,9 +42,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserAnimationsModule,
     GrpcCoreModule.forRoot(),
     GrpcWebClientModule.forRoot({
-      settings: { host: 'https://localhost:7154' }})
+      settings: { host: 'https://localhost:7154' }
+    })
   ],
-  providers: [{ provide: BASE_PATH, useValue:"https://localhost:7154"}, MatchHub],
+  providers: [
+    { provide: BASE_PATH, useValue: "https://localhost:7154" },
+    MatchHub
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
