@@ -9,8 +9,9 @@
     </div>
 
 
-    <div class="m-3 d-flex align-items-center justify-content-center">
-        <h3>VS</h3>
+    <div class="m-3 d-flex  flex-column align-items-center justify-content-center">
+        <h4>VS</h4>
+        <div>{{match.playDate |date}}</div>
     </div>
     <div class="d-flex flex-column justify-content-start participation p-2 w-100"
         [ngClass]="{'won':match.participationB?.hasWon}">

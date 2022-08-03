@@ -5,6 +5,16 @@
 
 
 
-.participation.won{
+.participation.won {
     border-color: green !important;
+}
+
+
+.colored-by-result {
+    color: red;
+}
+
+.won .colored-by-result {
+    color: green;
+
 }
