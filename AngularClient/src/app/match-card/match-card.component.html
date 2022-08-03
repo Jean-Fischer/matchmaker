@@ -1,16 +1,17 @@
-<div class="d-flex justify-content-center m-3 wireframe">
+<div class="d-flex justify-content-between m-3 wireframe">
     <div class="d-flex flex-column text-center participation p-2" [ngClass]="{'won':match.participationA?.hasWon}">
         <div>{{match.participationA?.player?.nickname}}</div>
-        <div>{{match.participationA?.finishingRank}} ({{match.participationA?.rankDifference}}) - ({{match.participationA?.startingRank}})</div>
+        <div>{{match.participationA?.finishingRank}}<span class="colored-by-result ml-2">({{match.participationA?.rankDifference}})</span></div> 
     </div>
 
 
-    <div class="m-3 d-flex align-items-center justify-content-center">
-        <h3>VS</h3>
+    <div class="m-3 d-flex  flex-column align-items-center justify-content-center">
+        <h4>VS</h4>
+        <div>{{match.playDate |date}}</div>
     </div>
     <div class="d-flex flex-column text-center participation p-2" [ngClass]="{'won':match.participationB?.hasWon}">
         <div>{{match.participationB?.player?.nickname}}</div>
-        <div>{{match.participationB?.finishingRank}} ({{match.participationB?.rankDifference}}) - ({{match.participationB?.startingRank}})</div>
+        <div>{{match.participationB?.finishingRank}}<span class="colored-by-result ml-2">({{match.participationB?.rankDifference}})</span></div> 
     </div>
 
 
