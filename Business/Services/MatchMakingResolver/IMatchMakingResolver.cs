@@ -4,7 +4,7 @@ namespace Business.Services.MatchMaking;
 
 public interface IMatchMakingResolver
 {
-    Task<IEnumerable<Matching>> ResolveMatchings(IEnumerable<MatchQueueDto> matchQueueDtos);
+    Task<IEnumerable<Matching>> ResolveMatchings(IEnumerable<MatchQueueDto> matchQueueDtos, CancellationToken cancellationToken);
 }
 
 public class Matching

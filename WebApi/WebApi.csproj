@@ -9,6 +9,8 @@
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="11.0.1" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.46.0" />
+        <PackageReference Include="Grpc.AspNetCore.Web" Version="2.46.0" />
         <PackageReference Include="Hangfire.AspNetCore" Version="1.8.0-beta4" />
         <PackageReference Include="Hangfire.Storage.SQLite" Version="0.3.2" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.5">
@@ -36,5 +38,7 @@
       <_ContentIncludedByDefault Remove="Pages\_ViewImports.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\_ViewStart.cshtml" />
     </ItemGroup>
-
+  <ItemGroup>
+    <Protobuf Include="Proto\match.proto" />
+  </ItemGroup>
 </Project>

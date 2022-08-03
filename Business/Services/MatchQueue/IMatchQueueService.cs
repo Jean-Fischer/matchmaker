@@ -6,10 +6,10 @@ namespace Business.Services.MatchQueue;
 
 public interface IMatchQueueService
 {
-    Task<MatchQueueDto> AddToQueue(int playerId);
+    Task<MatchQueueDto> AddToQueue(int playerId, CancellationToken cancellationToken);
 
-    Task<IEnumerable<MatchQueueDto>> GetAll();
+    Task<IEnumerable<MatchQueueDto>> GetAll(CancellationToken cancellationToken);
     
-    Task ProcessQueue();
+    Task ProcessQueue(CancellationToken cancellationToken);
 
 }

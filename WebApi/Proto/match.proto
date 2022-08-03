@@ -1,0 +1,41 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+
+service MatchGprcService {
+  rpc GetAllStream (Request) returns (stream MatchGrpcDto) {}
+  rpc GetAll (Request) returns (Response) {}
+  rpc GetAllRefreshed (Request) returns (stream Response) {}
+}
+
+message Request{}
+
+message Response{
+  repeated MatchGrpcDto result =1;
+}
+
+message MatchGrpcDto{
+  int32 Id = 1;
+  ParticipationGrpcDto ParticipationA = 2;
+  ParticipationGrpcDto ParticipationB = 3;
+  google.protobuf.Timestamp RegistrationDate = 4;
+  optional google.protobuf.Timestamp PlayDate = 5;
+  
+}
+
+message ParticipationGrpcDto{
+  int32 Id = 1;
+  PlayerGrpcDto Player=2;
+  int32 StartingRank=3;
+  int32 FinishingRank = 4;
+  int32 RankDifference=5;
+  optional bool HasWon=6;
+      
+  
+}
+
+
+message PlayerGrpcDto{
+  int32 Id = 1;
+  string Nickname = 2;
+  int32 Rank = 3;
+}

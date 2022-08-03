@@ -9,8 +9,6 @@ namespace WebApi.Controllers;
 [Route("api/[controller]")]
 public class MatchController
 {
-
-
     private readonly IMatchService _matchService;
 
 
@@ -20,27 +18,27 @@ public class MatchController
     }
 
     [HttpPost("create")]
-    public async Task<int> CreateMatch(int playerIdA, int playerIdB)
+    public async Task<int> CreateMatch(int playerIdA, int playerIdB, CancellationToken cancellationToken)
     {
-        return await _matchService.CreateGame(playerIdA, playerIdB);
+        return await _matchService.CreateGame(playerIdA, playerIdB, cancellationToken);
     }
 
     [HttpPost("resolve/{matchid}")]
-    public async Task ResolveGame(int matchid)
+    public async Task ResolveGame(int matchid, CancellationToken cancellationToken)
     {
-        await _matchService.ResolveGame(matchid);
+        await _matchService.ResolveGame(matchid, cancellationToken);
     }
-    
+
     [HttpGet("{matchid}")]
-    public async Task<MatchDto> Get(int matchid)
+    public async Task<MatchDto> Get(int matchid, CancellationToken cancellationToken)
     {
-        return await _matchService.Get(matchid);
+        return await _matchService.Get(matchid, cancellationToken);
     }
-    
+
     [HttpGet("")]
-    public async Task<IEnumerable<MatchDto>> Get([FromQuery]int pageSize = 999999, [FromQuery]int pageNumber = 0)
+    public async Task<IEnumerable<MatchDto>> Get(CancellationToken cancellationToken, [FromQuery] int pageSize = 999999,
+        [FromQuery] int pageNumber = 0)
     {
-        return await _matchService.GetAll(pageSize,pageNumber);
+        return await _matchService.GetAll(cancellationToken, pageSize, pageNumber);
     }
-    
 }
