@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Business.Dto;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
@@ -25,4 +26,15 @@ public class PlayerService : IPlayerService
         return _mapper.Map<PlayerDto>(newEntry.Entity);
     }
 
+    public async Task<IEnumerable<PlayerDto>> GetAll()
+    {
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+        return await context.Players.ProjectTo<PlayerDto>(_mapper.ConfigurationProvider).ToListAsync();
+    }
+
+    public async Task<IEnumerable<PlayerDto>> GetUnlisted()
+    {
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+        return await context.Players.Include(s => s.MatchQueues).Where(s => !s.MatchQueues.Any()).ProjectTo<PlayerDto>(_mapper.ConfigurationProvider).ToListAsync();
+    }
 }

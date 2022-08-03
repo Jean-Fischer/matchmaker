@@ -1,5 +1,7 @@
 using Business;
 using Business.Services.Matches;
+using Business.Services.MatchMaking;
+using Business.Services.MatchQueue;
 using Business.Services.MatchSimulations;
 using Business.Services.Player;
 using Business.Services.Rating;
@@ -20,6 +22,8 @@ builder.Services.AddDbContext<MatchMakingContext>(opts => opts.UseSqlite("Data S
 builder.Services.AddScoped<IMatchService,MatchService>();
 builder.Services.AddScoped<IRatingService,RatingService>();
 builder.Services.AddScoped<IPlayerService,PlayerService>();
+builder.Services.AddScoped<IMatchMakingResolver,TrivialMatchMakingResolver>();
+builder.Services.AddScoped<IMatchQueueService,MatchQueueService>();
 builder.Services.AddScoped<IMatchSimulationService,MatchSimulationService>();
 builder.Services.AddAutoMapper(typeof(BusinessMappingProfile));
 builder.Services.AddHostedService<MatchResolver>();

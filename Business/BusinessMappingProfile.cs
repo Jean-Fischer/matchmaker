@@ -15,5 +15,9 @@ public class BusinessMappingProfile : Profile
         CreateMap<Player, PlayerDto>().ReverseMap();
 
         CreateMap<PlayerDto, Player>().ReverseMap();
+        
+        
+        
+        CreateMap<MatchQueueDto,MatchQueue>().ReverseMap();
     }
 }

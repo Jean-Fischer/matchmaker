@@ -3,6 +3,7 @@ using System;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(MatchMakingContext))]
-    partial class MatchMakingContextModelSnapshot : ModelSnapshot
+    [Migration("20220616111448_AddMatchQueue")]
+    partial class AddMatchQueue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
@@ -107,32 +109,14 @@ namespace DAL.Migrations
                         new
                         {
                             Id = 1,
-                            Nickname = "Jean",
-                            Rank = 1100
+                            Nickname = "Testos",
+                            Rank = 0
                         },
                         new
                         {
                             Id = 2,
-                            Nickname = "Martin",
-                            Rank = 1200
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Nickname = "Greg",
-                            Rank = 1200
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Nickname = "Cosmin",
-                            Rank = 1200
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Nickname = "Kevin",
-                            Rank = 1200
+                            Nickname = "Testas",
+                            Rank = 0
                         });
                 });
 

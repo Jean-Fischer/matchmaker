@@ -1,5 +1,7 @@
+<a routerLink="/queue" routerLinkActive="active" ariaCurrentWhenActive="page">Queue</a>
 <div class="container">
-    <div>
+    <router-outlet></router-outlet>
+</div>
 
         <form [formGroup]="newPlayerForm" (ngSubmit)="onSubmit()">
             <div class="row">

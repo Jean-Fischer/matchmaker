@@ -21,10 +21,15 @@ public class PlayerController
     
     
     [HttpGet("")]
-    public async Task<IEnumerable<Player>> GetPlayers()
+    public async Task<IEnumerable<PlayerDto>> GetPlayers()
     {
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-        return context.Players.ToList();
+        return await _playerService.GetAll();
+    }
+    
+    [HttpGet("unlisted")]
+    public async Task<IEnumerable<PlayerDto>> GetUnlistedPlayers()
+    {
+        return await  _playerService.GetUnlisted();
     }
 
     [HttpPost("")]

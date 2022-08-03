@@ -93,8 +93,10 @@ public class MatchService : IMatchService
         return await context.Matches.Include(s => s.Participations)
             .ThenInclude(s => s.Player)
             .AsSplitQuery()
-            //.Skip(pageSize*pageNumber)
-            //.Take(pageSize)
+            .OrderByDescending(s=>s.RegistrationDate)
+            .Skip(pageSize*pageNumber)
+            .Take(pageSize)
+            
             .ProjectTo<MatchDto>(_mapper.ConfigurationProvider).ToListAsync();
         
     }
