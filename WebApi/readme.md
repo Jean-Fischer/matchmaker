@@ -14,6 +14,7 @@ reasons, it gets me working.
 Technologies I tried in this repo :
 
 - [x] Ef core DB first with SQLite
+    - [x] [EasyData]("https://github.com/KorzhCom/EasyData") auto generated CRUD UI
 - [x] Client generation from OpenAPI Doc
 - [x] GRPC server and client
     - [x] Simple CRUD
