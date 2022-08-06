@@ -11,5 +11,4 @@ public class Matching
 {
     public MatchQueueDto Player1 { get; set; }
     public MatchQueueDto Player2 { get; set; }
-
 }

@@ -1,12 +1,15 @@
-﻿using System.Runtime.InteropServices.ComTypes;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices.ComTypes;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Business.Dto;
+using Business.Helpers;
 using Business.Services.Enum;
 using Business.Services.MatchSimulations;
 using Business.Services.Rating;
 using Business.Technical;
 using DAL.Models;
+using HotChocolate.Subscriptions;
 using Microsoft.EntityFrameworkCore;
 using NetMQ;
 using NetMQ.Sockets;
@@ -21,10 +24,11 @@ public class MatchService : IMatchService
     private readonly MatchMakingContext _context;
     private readonly IMapper _mapper;
     private readonly SocketService _socketService;
+    private readonly ITopicEventSender _topicEventSender; 
 
     public MatchService(IDbContextFactory<MatchMakingContext> dbContextFactory,
         IMatchSimulationService matchSimulationService, IRatingService ratingService, MatchMakingContext context,
-        IMapper mapper, SocketService socketService)
+        IMapper mapper, SocketService socketService, ITopicEventSender topicEventSender)
     {
         _dbContextFactory = dbContextFactory;
         _matchSimulationService = matchSimulationService;
@@ -32,6 +36,7 @@ public class MatchService : IMatchService
         _context = context;
         _mapper = mapper;
         _socketService = socketService;
+        _topicEventSender = topicEventSender;
     }
 
     public async Task<int> CreateGame(int playerIdA, int playerIdB, CancellationToken cancellationToken)
@@ -69,26 +74,29 @@ public class MatchService : IMatchService
             .Include(s => s.Participations)
             .ThenInclude(s => s.Player)
             .FirstOrDefault(s => s.Id == matchId);
-        _matchSimulationService.SimulateMatchResult(match);
+
+        
+        _matchSimulationService.SimulateMatchResult(match ?? throw new ArgumentNullException(nameof(match)));
         var participations = match.GetParticipations();
-        var newPlayerARating = (int)_ratingService.GetNewRating(participations.A.Player.Rank,
-            participations.B.Player.Rank,
-            GameResultCoefficientHelper.GetCoefficientFromResult(participations.A.HasWon));
-        var newPlayerBRating = (int)_ratingService.GetNewRating(participations.B.Player.Rank,
-            participations.A.Player.Rank,
-            GameResultCoefficientHelper.GetCoefficientFromResult(participations.B.HasWon));
+        var newPlayerARating = (int)_ratingService.GetNewRating(participations.First.Player.Rank,
+            participations.Second.Player.Rank,
+            GameResultCoefficientHelper.GetCoefficientFromResult(participations.First.HasWon));
+        var newPlayerBRating = (int)_ratingService.GetNewRating(participations.Second.Player.Rank,
+            participations.First.Player.Rank,
+            GameResultCoefficientHelper.GetCoefficientFromResult(participations.Second.HasWon));
         match.PlayDate = DateTime.Now;
-        participations.A.FinishingRank = newPlayerARating;
-        participations.A.RankDifference = newPlayerARating - participations.A.StartingRank;
-        participations.A.Player.Rank = newPlayerARating;
-        participations.B.FinishingRank = newPlayerBRating;
-        participations.B.RankDifference = newPlayerBRating - participations.B.StartingRank;
-        participations.B.Player.Rank = newPlayerBRating;
+        participations.First.FinishingRank = newPlayerARating;
+        participations.First.RankDifference = newPlayerARating - participations.First.StartingRank;
+        participations.First.Player.Rank = newPlayerARating;
+        participations.Second.FinishingRank = newPlayerBRating;
+        participations.Second.RankDifference = newPlayerBRating - participations.Second.StartingRank;
+        participations.Second.Player.Rank = newPlayerBRating;
 
         await context.SaveChangesAsync();
         return match;
     }
 
+    
     public async Task<MatchDto> Get(int matchId, CancellationToken cancellationToken)
     {
         await using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
@@ -122,8 +130,8 @@ public class MatchService : IMatchService
 
 
         var pubSocket = _socketService.PublisherSocket;
-
-
+        var message = context.Matches.ProjectTo<MatchDto>(_mapper.ConfigurationProvider).ToList();
+        await _topicEventSender.SendAsync("RefreshMatches",message, cancellationToken);
         pubSocket.SendMoreFrame("RefreshMatches").SendFrame("test");
     }
 }

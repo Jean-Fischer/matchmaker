@@ -19,6 +19,8 @@ import { MatchQueueCardComponent } from './match-queue-card/match-queue-card.com
 import { MatchHub } from './signalR/matchHub';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EasyDataComponent } from './easydata/easydata.component';
+import { GraphQLModule } from './graphql.module';
+import { GraphQLService } from './services/graphQL/graphQL.service';
 
 @NgModule({
   declarations: [
@@ -43,12 +45,10 @@ import { EasyDataComponent } from './easydata/easydata.component';
     GrpcCoreModule.forRoot(),
     GrpcWebClientModule.forRoot({
       settings: { host: 'https://localhost:7154' }
-    })
+    }),
+    GraphQLModule
   ],
-  providers: [
-    { provide: BASE_PATH, useValue: "https://localhost:7154" },
-    MatchHub
-  ],
+  providers: [{ provide: BASE_PATH, useValue: "https://localhost:7154" }, MatchHub, GraphQLService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

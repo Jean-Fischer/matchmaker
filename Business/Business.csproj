@@ -11,8 +11,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AutoMapper" Version="11.0.1" />
-      <PackageReference Include="AutoMapper.Collection" Version="8.0.0" />
+      <PackageReference Include="AutoMapper" Version="10.1.1" />
+      <PackageReference Include="AutoMapper.Collection.EntityFramework" Version="7.0.1" />
+      <PackageReference Include="HotChocolate.Subscriptions" Version="12.12.1" />
       <PackageReference Include="NetMQ" Version="4.0.1.9" />
     </ItemGroup>
 
