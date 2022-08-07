@@ -21,11 +21,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EasyDataComponent } from './easydata/easydata.component';
 import { GraphQLModule } from './graphql.module';
 import { GraphQLService } from './services/graphQL/graphQL.service';
+import { PlayerManagementComponent } from './player-management/player-management.component';
+import { playersReducer } from './state/players/players.reducer';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import { PlayersEffects } from './state/players/players.effects';
 
 @NgModule({
   declarations: [
     AppComponent,
     PlayerCardComponent,
+    PlayerManagementComponent,
     MatchCreatorComponent,
     MatchCardComponent,
     QueuePageComponent,
@@ -46,7 +53,10 @@ import { GraphQLService } from './services/graphQL/graphQL.service';
     GrpcWebClientModule.forRoot({
       settings: { host: 'https://localhost:7154' }
     }),
-    GraphQLModule
+    GraphQLModule,
+    StoreModule.forRoot({players: playersReducer}),
+    StoreDevtoolsModule.instrument({maxAge:25}),
+    EffectsModule.forRoot([PlayersEffects])
   ],
   providers: [{ provide: BASE_PATH, useValue: "https://localhost:7154" }, MatchHub, GraphQLService],
   bootstrap: [AppComponent]

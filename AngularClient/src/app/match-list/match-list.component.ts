@@ -27,9 +27,9 @@ export class MatchListComponent implements OnInit {
     //SignalR endpoint
     this.matches$ = this.matchHub.getAllStream();
     //Grpc live endpoint
-    this.matches$ = this.grpcService.getAllRefreshed(new Request()).pipe(map(s=>s.result as MatchDto[]));
+    //this.matches$ = this.grpcService.getAllRefreshed(new Request()).pipe(map(s=>s.result as MatchDto[]));
     //let's try to do the same with graphQL
-    this.graphQLService.GetBasicMatchesInfo().subscribe(s=>console.log(s));
+    //this.graphQLService.GetBasicMatchesInfo().subscribe(s=>console.log(s));
 
     
   }
