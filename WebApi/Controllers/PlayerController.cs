@@ -1,5 +1,5 @@
 ﻿using Business.Dto;
-using Business.Services.Player;
+using Business.Services.PlayerService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -32,5 +32,12 @@ public class PlayerController
     public async Task<PlayerDto> CreatePlayer(PlayerDto player, CancellationToken cancellationToken)
     {
         return await _playerService.CreatePlayer(player, cancellationToken);
+    }
+
+
+    [HttpPut("generateplayers/{numberOfPlayers}")]
+    public async Task CreatePlayer(int numberOfPlayers, CancellationToken cancellationToken)
+    {
+        await _playerService.GenerateRandomPlayers(numberOfPlayers, cancellationToken);
     }
 }

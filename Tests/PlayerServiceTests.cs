@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Business;
 using Business.Dto;
-using Business.Services.Player;
+using Business.Services.PlayerService;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Moq;

@@ -34,4 +34,11 @@ public class MatchQueueController
     {
         await _matchQueueService.ProcessQueue(cancellationToken);
     }
+
+    [HttpPut("randomQueue/{numberOfPlayerToQueue}")]
+    public async Task QueueRandom(int numberOfPlayerToQueue, CancellationToken cancellationToken)
+    {
+
+        await _matchQueueService.QueueRandomPlayers(numberOfPlayerToQueue, cancellationToken);
+    }
 }

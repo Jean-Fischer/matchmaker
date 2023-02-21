@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using Business.Dto;
 using Business.Services.Matches;
 using Business.Services.MatchMaking;
+using Business.Services.PlayerService;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,13 +15,15 @@ public class MatchQueueService :IMatchQueueService
     private readonly IMapper _mapper;
     private readonly IMatchMakingResolver _matchMakingResolver;
     private readonly IMatchService _matchService;
+    private readonly IPlayerService _playerService;
 
-    public MatchQueueService(IDbContextFactory<MatchMakingContext> dbContextFactory, IMapper mapper, IMatchMakingResolver matchMakingResolver, IMatchService matchService)
+    public MatchQueueService(IDbContextFactory<MatchMakingContext> dbContextFactory, IMapper mapper, IMatchMakingResolver matchMakingResolver, IMatchService matchService, IPlayerService playerService)
     {
         _dbContextFactory = dbContextFactory;
         _mapper = mapper;
         _matchMakingResolver = matchMakingResolver;
         _matchService = matchService;
+        _playerService = playerService;
     }
 
     public async Task<MatchQueueDto> AddToQueue(int playerId, CancellationToken cancellationToken)
@@ -38,6 +41,21 @@ public class MatchQueueService :IMatchQueueService
         return _mapper.Map<MatchQueueDto>(entry.Entity);
 
     }
+
+    public async Task AddToQueueInBulk(List<int> playerIds, CancellationToken cancellationToken)
+    {
+        await using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+        var players = context.Players.Where(s => playerIds.Contains(s.Id) && !s.MatchQueues.Any());
+        
+        foreach(var player in players)
+        {
+            player.MatchQueues.Add(new DAL.Models.MatchQueue() { JoinDate = DateTime.Now });
+        }
+
+        await context.SaveChangesAsync(cancellationToken);
+
+    }
+
 
     public async Task<IEnumerable<MatchQueueDto>> GetAll(CancellationToken cancellationToken)
     {
@@ -59,6 +77,16 @@ public class MatchQueueService :IMatchQueueService
         }
 
         await context.SaveChangesAsync(cancellationToken);
+
+    }
+
+    public async Task QueueRandomPlayers(float percentageOfPlayerToQueue, CancellationToken cancellationToken)
+    {
+        var players = await _playerService.GetUnlisted(cancellationToken);
+        var numberOfPlayerToSelect = (int)(players.Count() * percentageOfPlayerToQueue);
+        var rnd = new Random();
+        var selectedPlayers = players.OrderBy(x => rnd.Next()).Take(numberOfPlayerToSelect);
+        await AddToQueueInBulk(selectedPlayers.Select(s => s.Id).ToList(), cancellationToken);
 
     }
 
