@@ -3,15 +3,18 @@ using Business.Services.Matches;
 using Business.Services.MatchMaking;
 using Business.Services.MatchQueue;
 using Business.Services.MatchSimulations;
-using Business.Services.Player;
+using Business.Services.PlayerService;
+using Business.Services.RandomUserGeneration;
 using Business.Services.Rating;
 using Business.Technical;
 using DAL.Models;
 using EasyData.Services;
 using Hangfire;
+using Hangfire.MemoryStorage;
 using Hangfire.Storage.SQLite;
 using HotChocolate.AspNetCore.Voyager;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 using WebApi.Background;
 using WebApi.GraphQL;
 using WebApi.Grpc;
@@ -34,16 +37,20 @@ builder.Services.AddScoped<IPlayerService, PlayerService>();
 builder.Services.AddScoped<IMatchMakingResolver, TrivialMatchMakingResolver>();
 builder.Services.AddScoped<IMatchQueueService, MatchQueueService>();
 builder.Services.AddScoped<IMatchSimulationService, MatchSimulationService>();
+builder.Services.AddScoped<IRandomUserGeneration, RandomUserGeneration>();
 builder.Services.AddScoped<BackgroundHelperService>();
 builder.Services.AddSingleton<SocketService>();
 builder.Services.AddAutoMapper(typeof(BusinessMappingProfile), typeof(MapProfile));
 builder.Services.AddHangfire(configuration => configuration
     .UseSimpleAssemblyNameTypeSerializer()
     .UseRecommendedSerializerSettings()
-    .UseSQLiteStorage(builder.Configuration["SQLite:Hangfire"]));
+    //.UseSQLiteStorage(builder.Configuration["SQLite:Hangfire"])
+    .UseMemoryStorage()
+    );
 builder.Services.AddHangfireServer();
 builder.Services.AddGrpc();
 builder.Services.AddSignalR();
+
 
 builder.Services.AddGraphQLServer()
     .AddQueryType<Query>()
@@ -52,7 +59,12 @@ builder.Services.AddGraphQLServer()
 
 var devCorsPolicy = "_devCorsPolicy";
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(
+    opts =>
+    {
+        opts.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCors(options =>
 {
